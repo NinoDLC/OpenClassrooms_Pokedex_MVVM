@@ -15,8 +15,12 @@ import fr.delcey.pokedex.model.Pokemon;
 
 public class PokemonAdapter extends ListAdapter<Pokemon, PokemonAdapter.PokemonViewHolder> {
 
-    protected PokemonAdapter() {
+    @NonNull
+    private final OnPokemonClickedListener mListener;
+
+    protected PokemonAdapter(@NonNull OnPokemonClickedListener listener) {
         super(new PokemonDiffCallback());
+        mListener = listener;
     }
 
     @NonNull
@@ -29,7 +33,7 @@ public class PokemonAdapter extends ListAdapter<Pokemon, PokemonAdapter.PokemonV
 
     @Override
     public void onBindViewHolder(@NonNull PokemonAdapter.PokemonViewHolder holder, int position) {
-        holder.bind(getItem(position));
+        holder.bind(getItem(position), mListener);
     }
 
     public static class PokemonViewHolder extends RecyclerView.ViewHolder {
@@ -44,10 +48,21 @@ public class PokemonAdapter extends ListAdapter<Pokemon, PokemonAdapter.PokemonV
             nameTextView = itemView.findViewById(R.id.pokemon_name);
         }
 
-        public void bind(Pokemon item) {
-            iconImageView.setImageResource(item.getIconDrawableRes());
-            nameTextView.setText(item.getName());
+        public void bind(@NonNull Pokemon pokemon, @NonNull OnPokemonClickedListener listener) {
+            iconImageView.setImageResource(pokemon.getIconDrawableRes());
+            nameTextView.setText(pokemon.getName());
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onPokemonClicked(pokemon);
+                }
+            });
         }
+    }
+
+    public interface OnPokemonClickedListener {
+        void onPokemonClicked(Pokemon pokemon);
     }
 
     private static class PokemonDiffCallback extends DiffUtil.ItemCallback<Pokemon> {

@@ -38,7 +38,7 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
     @Override
     public <T extends ViewModel> T create(Class<T> modelClass) {
         if (modelClass.isAssignableFrom(MainViewModel.class)) {
-            return (T) new MainViewModel(mPokemonRepository);
+            return (T) new MainViewModel(MainApplication.getInstance(), mPokemonRepository);
         }
         throw new IllegalArgumentException("Unknown ViewModel class");
     }

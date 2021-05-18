@@ -1,5 +1,7 @@
 package fr.delcey.pokedex;
 
+import android.app.Application;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -15,16 +17,22 @@ import fr.delcey.pokedex.repository.PokemonRepository;
 public class MainViewModel extends ViewModel {
 
     @NonNull
+    private final Application mApplication;
+    @NonNull
     private final PokemonRepository mPokemonRepository;
 
     private final MutableLiveData<List<Pokemon>> mPokemonsMutableLiveData = new MutableLiveData<>();
     private final MutableLiveData<String> mButtonNameMutableLiveData = new MutableLiveData<>();
 
+    private final MutableLiveData<String> mToastMessageMutableLiveData = new MutableLiveData<>();
+
     private int pokemonTypeOrdinalIndex = 0;
 
     public MainViewModel(
+        @NonNull Application application,
         @NonNull PokemonRepository pokemonRepository
     ) {
+        mApplication = application;
         mPokemonRepository = pokemonRepository;
 
         mPokemonsMutableLiveData.setValue(pokemonRepository.getPokemons());
@@ -37,6 +45,10 @@ public class MainViewModel extends ViewModel {
 
     public LiveData<String> getButtonNameLiveData() {
         return mButtonNameMutableLiveData;
+    }
+
+    public LiveData<String> getToastMessageLiveData() {
+        return mToastMessageMutableLiveData;
     }
 
     public void onTypeButtonClicked() {
@@ -54,6 +66,12 @@ public class MainViewModel extends ViewModel {
         }
 
         mPokemonsMutableLiveData.setValue(pokemons);
+    }
+
+    public void onPokemonClicked(Pokemon pokemon) {
+        String message = mApplication.getString(R.string.i_am, pokemon.getName());
+
+        mToastMessageMutableLiveData.setValue(message);
     }
 
     private String transformOrdinalToName() {

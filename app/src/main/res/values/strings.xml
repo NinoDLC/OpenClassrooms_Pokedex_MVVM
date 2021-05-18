@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Pokedex</string>
+
+    <string name="i_am">Je m\'appelle %s</string>
 </resources>

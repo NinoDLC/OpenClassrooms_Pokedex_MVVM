@@ -3,6 +3,7 @@ package fr.delcey.pokedex;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
@@ -24,7 +25,12 @@ public class MainActivity extends AppCompatActivity {
 
         MainViewModel mainViewModel = new ViewModelProvider(this, ViewModelFactory.getInstance()).get(MainViewModel.class);
 
-        PokemonAdapter adapter = new PokemonAdapter();
+        PokemonAdapter adapter = new PokemonAdapter(new PokemonAdapter.OnPokemonClickedListener() {
+            @Override
+            public void onPokemonClicked(Pokemon pokemon) {
+                mainViewModel.onPokemonClicked(pokemon);
+            }
+        });
 
         RecyclerView recyclerView = findViewById(R.id.main_recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -42,6 +48,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onChanged(String buttonName) {
                 button.setText(buttonName);
+            }
+        });
+        mainViewModel.getToastMessageLiveData().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String toastMessage) {
+                Toast.makeText(MainActivity.this, toastMessage, Toast.LENGTH_LONG).show();
             }
         });
 
