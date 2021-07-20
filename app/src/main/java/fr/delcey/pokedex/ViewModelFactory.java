@@ -15,7 +15,9 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
     @NonNull
     private final PokemonRepository mPokemonRepository;
 
-    public ViewModelFactory(@NonNull PokemonRepository pokemonRepository) {
+    public ViewModelFactory(
+        @NonNull PokemonRepository pokemonRepository
+    ) {
         mPokemonRepository = pokemonRepository;
     }
 

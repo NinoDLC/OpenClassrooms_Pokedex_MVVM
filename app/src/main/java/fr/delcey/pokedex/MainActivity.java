@@ -44,12 +44,6 @@ public class MainActivity extends AppCompatActivity {
                 adapter.submitList(pokemons);
             }
         });
-        mainViewModel.getButtonNameLiveData().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String buttonName) {
-                button.setText(buttonName);
-            }
-        });
         mainViewModel.getToastMessageLiveData().observe(this, new Observer<String>() {
             @Override
             public void onChanged(String toastMessage) {

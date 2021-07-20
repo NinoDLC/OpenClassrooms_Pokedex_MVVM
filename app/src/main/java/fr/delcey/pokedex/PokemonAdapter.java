@@ -74,7 +74,7 @@ public class PokemonAdapter extends ListAdapter<Pokemon, PokemonAdapter.PokemonV
 
         @Override
         public boolean areContentsTheSame(@NonNull Pokemon oldItem, @NonNull Pokemon newItem) {
-            return false;
+            return oldItem.equals(newItem);
         }
     }
 }
